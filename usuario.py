@@ -1,7 +1,7 @@
 import funciones
 
 def user0(usuario,contraseña):
-    a="user"
+    a="admin"
     b="12345"
     if usuario==a and contraseña==b:
         return True
@@ -34,3 +34,4 @@ def menu_usuario():
                     print("Opcion no valida")
         except ValueError:
             print("Valor no valido")
+            
