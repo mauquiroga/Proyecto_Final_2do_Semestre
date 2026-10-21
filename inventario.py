@@ -6,10 +6,10 @@ stocks = [5, 8, 4, 10, 6]
 
 def mostrar_catalogo():
     print("\n" + "="*55)
-    print(f"{'INDICE':<8} | {'CODIGO':<8} | {'PRODUCTO':<22} | {'PRECIO':<6} | {'STOCK':<5}")
+    print(f"{'INDICE':<8} | {'CODIGO':<8} | {'PRODUCTO':<22} | {'PRECIO':<7} | {'STOCK':<5}")
     print("="*55)
     for i in range(len(codigos)):
-        print(f"{i:<8} | {codigos[i]:<8} | {nombres[i]:<22} | ${precios[i]:<5.2f} | {stocks[i]:<5}")
+        print(f"{i:<8} | {codigos[i]:<8} | {nombres[i]:<22} | Bs{precios[i]:<5.2f} | {stocks[i]:<5}")
     print("="*55)
 
 def buscar_indice_producto(codigo_buscado):
