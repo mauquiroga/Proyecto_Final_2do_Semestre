@@ -1,3 +1,6 @@
+import inventario
+from validaciones import leer_entero, leer_decimal, leer_texto
+
 def ver_usuarios(usuarios):
     print("\n===== LISTA DE USUARIOS =====")
     if len(usuarios) == 0:
@@ -8,6 +11,7 @@ def ver_usuarios(usuarios):
         print(f"Usuario: {user[0]}")
         print(f"Nombre: {user[2]}")
         print(f"Edad: {user[3]}")
+
 def agregar_usuario(usuarios):
     print("\n===== AGREGAR USUARIO =====")
     usuario = input("Nuevo usuario: ")
@@ -30,6 +34,7 @@ def agregar_usuario(usuarios):
         edad
     ])
     print("Usuario agregado correctamente.")
+
 def eliminar_usuario(usuarios):
     ver_usuarios(usuarios)
     if len(usuarios) == 0:
@@ -43,6 +48,7 @@ def eliminar_usuario(usuarios):
         print(f"Usuario '{eliminado[0]}' eliminado.")
     except ValueError:
         print("Debes introducir un número.")
+
 def modificar_usuario(usuarios):
     ver_usuarios(usuarios)
     if len(usuarios) == 0:
@@ -77,3 +83,26 @@ def modificar_usuario(usuarios):
         print("Usuario modificado correctamente.")
     except ValueError:
         print("Debes introducir un número.")
+
+def menu_agregar_producto():
+    codigo = leer_texto("Código del producto: ").upper()
+    if inventario.buscar_indice_producto(codigo) != -1:
+        print("Error: ya existe un producto con ese código.")
+        return
+    nombre = leer_texto("Nombre del producto: ")
+    precio = leer_decimal("Precio: ", minimo=0.01)
+    stock = leer_entero("Stock inicial: ", minimo=0)
+    inventario.agregar_producto(codigo, nombre, precio, stock)
+    print("Producto agregado correctamente.")
+
+def menu_reabastecer():
+    codigo = leer_texto("Código del producto: ").upper()
+    pos = inventario.buscar_indice_producto(codigo)
+    if pos == -1:
+        print("Error: ese producto no existe.")
+        return
+    cantidad = leer_entero("Cantidad a sumar: ", minimo=1)
+    if inventario.reabastecer_stock(pos, cantidad):
+        print(f"Stock actualizado. Ahora hay {inventario.stocks[pos]} unidades.")
+    else:
+        print("No se pudo reabastecer.")
