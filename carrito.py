@@ -45,9 +45,9 @@ def mostrar_carrito():
         pos = inventario.buscar_indice_producto(carrito_codigos[i])
         subtotal = inventario.precios[pos] * carrito_cantidades[i]
         total += subtotal
-        print(f"{inventario.nombres[pos]:<22} | {carrito_cantidades[i]:<5} | ${subtotal:>9.2f}")
+        print(f"{inventario.nombres[pos]:<22} | {carrito_cantidades[i]:<5} | Bs{subtotal:>9.2f}")
     print("=" * 50)
-    print(f"{'TOTAL':<31} ${total:>9.2f}")
+    print(f"{'TOTAL':<31} Bs{total:>9.2f}")
     return total
 
 def finalizar_compra(nombre_cliente):
@@ -89,7 +89,7 @@ def finalizar_compra(nombre_cliente):
     for linea in lineas:
         print(linea)
     print("-" * ancho)
-    print(f"{'TOTAL A PAGAR:':<{ancho - 10}}${total:>8.2f}")
+    print(f"{'TOTAL A PAGAR:':<{ancho - 10}}Bs{total:>8.2f}")
     print("=" * ancho)
     print("¡Gracias por su compra!".center(ancho))
     numero_factura += 1
