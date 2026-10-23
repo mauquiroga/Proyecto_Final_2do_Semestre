@@ -106,3 +106,18 @@ def menu_reabastecer():
         print(f"Stock actualizado. Ahora hay {inventario.stocks[pos]} unidades.")
     else:
         print("No se pudo reabastecer.")
+
+def menu_eliminar_producto():
+    inventario.mostrar_catalogo()
+    codigo = leer_texto("Código del producto a eliminar: ").upper()
+    pos = inventario.buscar_indice_producto(codigo)
+    if pos == -1:
+        print("error: ese producto no existe.")
+        return
+    nombre = inventario.nombres[pos]
+    confirmar = input(f"¿Seguro que quieres eliminar '{nombre}'? (s/n): ").strip().lower()
+    if confirmar == "s":
+        inventario.eliminar_producto(codigo)
+        print("Producto eliminado.")
+    else:
+        print("Operación cancelada.")

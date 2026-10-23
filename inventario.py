@@ -36,3 +36,13 @@ def reducir_stock_por_codigo(codigo_buscado, cantidad=1):
         stocks[pos] -= cantidad
         return True
     return False
+
+def eliminar_producto(codigo_buscado):
+    pos = buscar_indice_producto(codigo_buscado)
+    if pos == -1:
+        return False
+    codigos.pop(pos)
+    nombres.pop(pos)
+    precios.pop(pos)
+    stocks.pop(pos)
+    return True
