@@ -8,13 +8,15 @@ from administrador import (
     eliminar_usuario,
     modificar_usuario,
     menu_agregar_producto,
-    menu_reabastecer
+    menu_reabastecer,
+    menu_eliminar_producto
 )
 from usuario import (
     ver_perfil,
     cambiar_contraseña,
     cambiar_nombre,
     menu_agregar_carrito,
+    menu_quitar_carrito,
     menu_pagar
 )
 while True:
@@ -41,7 +43,8 @@ while True:
             print("5. Ver catálogo")
             print("6. Agregar producto")
             print("7. Reabastecer stock")
-            print("8. Cerrar sesión")
+            print("8. Eliminar producto")
+            print("9. Cerrar sesión")
             opcion = input("Seleccione una opción: ")
             if opcion == "1":
                 ver_usuarios(usuarios)
@@ -58,6 +61,8 @@ while True:
             elif opcion == "7":
                 menu_reabastecer()
             elif opcion == "8":
+                menu_eliminar_producto()
+            elif opcion == "9":
                 print("Sesión cerrada.")
                 break
             else:
@@ -80,8 +85,9 @@ while True:
             print("4. Ver catálogo")
             print("5. Agregar al carrito")
             print("6. Ver carrito")
-            print("7. Pagar")
-            print("8. Cerrar sesión")
+            print("7. Quitar del carrito")
+            print("8. Pagar")
+            print("9. Cerrar sesión")
             opcion = input("Seleccione una opción: ")
             if opcion == "1":
                 ver_perfil(usuario_actual)
@@ -96,8 +102,10 @@ while True:
             elif opcion == "6":
                 carrito.mostrar_carrito()
             elif opcion == "7":
-                menu_pagar(usuario_actual)
+                menu_quitar_carrito()
             elif opcion == "8":
+                menu_pagar(usuario_actual)
+            elif opcion == "9":
                 carrito.vaciar_carrito()
                 print("Sesión cerrada.")
                 break

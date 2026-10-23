@@ -36,3 +36,21 @@ def menu_pagar(usuario_actual):
         carrito.finalizar_compra(usuario_actual[2])
     else:
         print("Compra cancelada.")
+
+def menu_quitar_carrito():
+    if carrito.carrito_vacio():
+        print("Tu carrito está vacío.")
+        return
+    carrito.mostrar_carrito()
+    codigo = leer_texto("Código del producto a quitar: ").upper()
+    if codigo not in carrito.carrito_codigos:
+        print("Ese producto no está en tu carrito.")
+        return
+    i = carrito.carrito_codigos.index(codigo)
+    maximo = carrito.carrito_cantidades[i]
+    cantidad = leer_entero(
+        f"¿Cuántas unidades quitar? (1-{maximo}): ",
+        minimo=1,
+        maximo=maximo)
+    if carrito.quitar_del_carrito(codigo, cantidad):
+        print("Carrito actualizado.")

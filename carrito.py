@@ -95,3 +95,19 @@ def finalizar_compra(nombre_cliente):
     numero_factura += 1
     vaciar_carrito()
     return total
+
+def quitar_del_carrito(codigo, cantidad):
+    if codigo not in carrito_codigos:
+        print("Error: ese producto no está en tu carrito.")
+        return False
+    i = carrito_codigos.index(codigo)
+    if cantidad <= 0 or cantidad > carrito_cantidades[i]:
+        print(f"error: puedes quitar entre 1 y {carrito_cantidades[i]} unidades.")
+        return False
+    if cantidad == carrito_cantidades[i]:
+        # Se quita el producto de las DOS listas
+        carrito_codigos.pop(i)
+        carrito_cantidades.pop(i)
+    else:
+        carrito_cantidades[i] -= cantidad
+    return True
