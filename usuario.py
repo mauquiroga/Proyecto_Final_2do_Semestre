@@ -3,19 +3,19 @@ import carrito
 from validaciones import leer_entero, leer_texto, confirmar
 
 def ver_perfil(usuario):
-    print("\n===== MI PERFIL =====")
+    print("\n MI PERFIL")
     print(f"Usuario: {usuario[0]}")
     print(f"Nombre: {usuario[2]}")
     print(f"Edad: {usuario[3]}")
 
 def cambiar_contraseña(usuario):
-    print("\n===== CAMBIAR CONTRASEÑA =====")
+    print("\n CAMBIAR CONTRASEÑA")
     nueva = input("Nueva contraseña: ")
     usuario[1] = nueva
     print("Contraseña actualizada correctamente.")
 
 def cambiar_nombre(usuario):
-    print("\n===== CAMBIAR NOMBRE =====")
+    print("\n CAMBIAR NOMBRE")
     nuevo = input("Nuevo nombre: ")
     usuario[2] = nuevo
     print("Nombre actualizado correctamente.")
@@ -65,7 +65,7 @@ def menu_quitar_carrito():
 
 def menu_cuenta(usuario_actual):
     while True:
-        print("\n===== MI CUENTA =====")
+        print("\n MI CUENTA")
         print("1. Ver mi información")
         print("2. Cambiar nombre")
         print("3. Cambiar contraseña")
@@ -85,7 +85,7 @@ def menu_cuenta(usuario_actual):
 
 def menu_tienda_usuario(usuario_actual):
     while True:
-        print("\n===== TIENDA =====")
+        print("\n TIENDA")
         print("1. Ver catálogo")
         print("2. Agregar al carrito")
         print("3. Ver carrito")

@@ -140,7 +140,7 @@ def menu_eliminar_producto():
 
 def menu_cuentas(usuarios):
     while True:
-        print("\n===== ADMINISTRAR CUENTAS =====")
+        print("\n ADMINISTRAR CUENTAS")
         print("1. Ver usuarios")
         print("2. Agregar usuario")
         print("3. Eliminar usuario")
@@ -163,7 +163,7 @@ def menu_cuentas(usuarios):
 
 def menu_tienda_admin():
     while True:
-        print("\n===== ADMINISTRAR TIENDA =====")
+        print("\n ADMINISTRAR TIENDA")
         print("1. Ver catálogo")
         print("2. Agregar producto")
         print("3. Reabastecer stock")
