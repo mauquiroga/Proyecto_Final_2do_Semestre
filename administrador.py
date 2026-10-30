@@ -2,7 +2,7 @@ import inventario
 from validaciones import leer_entero, leer_decimal, leer_texto, confirmar
 
 def ver_usuarios(usuarios):
-    print("\n===== LISTA DE USUARIOS =====")
+    print("\n LISTA DE USUARIOS")
     if len(usuarios) == 0:
         print("No hay usuarios registrados.")
         return
@@ -13,7 +13,7 @@ def ver_usuarios(usuarios):
         print(f"Edad: {user[3]}")
 
 def agregar_usuario(usuarios):
-    print("\n===== AGREGAR USUARIO =====")
+    print("\n AGREGAR USUARIO")
     usuario = input("Nuevo usuario: ")
     # Comprobar si ya existe
     for user in usuarios:
