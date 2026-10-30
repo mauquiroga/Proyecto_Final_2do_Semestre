@@ -1,73 +1,34 @@
-import inventario
 import carrito
 from datos import usuarios, administradores
 from login import iniciar_sesion
-from administrador import (
-    ver_usuarios,
-    agregar_usuario,
-    eliminar_usuario,
-    modificar_usuario,
-    menu_agregar_producto,
-    menu_reabastecer,
-    menu_eliminar_producto
-)
-from usuario import (
-    ver_perfil,
-    cambiar_contraseña,
-    cambiar_nombre,
-    menu_agregar_carrito,
-    menu_quitar_carrito,
-    menu_pagar
-)
+from administrador import menu_cuentas, menu_tienda_admin
+from usuario import menu_cuenta, menu_tienda_usuario
 while True:
-    print("\n==============================")
-    print("       SISTEMA DE LOGIN")
-    print("==============================")
+    print("\n" + "=" * 32)
+    print("             LOGIN")
+    print("=" * 32)
     usuario_login = input("Usuario: ")
     contraseña = input("Contraseña: ")
-    tipo = iniciar_sesion(
-        usuario_login,
-        contraseña,
-        usuarios,
-        administradores
-    )
+    tipo = iniciar_sesion(usuario_login,contraseña,usuarios,administradores)
     # ADMINISTRADOR
     if tipo == "admin":
         print("\nBienvenido administrador.")
         while True:
             print("\n===== MENU ADMINISTRADOR =====")
-            print("1. Ver usuarios")
-            print("2. Agregar usuario")
-            print("3. Eliminar usuario")
-            print("4. Modificar usuario")
-            print("5. Ver catálogo")
-            print("6. Agregar producto")
-            print("7. Reabastecer stock")
-            print("8. Eliminar producto")
-            print("9. Cerrar sesión")
+            print("1. Administrar cuentas")
+            print("2. Administrar tienda")
+            print("3. Cerrar sesión")
             opcion = input("Seleccione una opción: ")
-            if opcion == "1":
-                ver_usuarios(usuarios)
-            elif opcion == "2":
-                agregar_usuario(usuarios)
-            elif opcion == "3":
-                eliminar_usuario(usuarios)
-            elif opcion == "4":
-                modificar_usuario(usuarios)
-            elif opcion == "5":
-                inventario.mostrar_catalogo()
-            elif opcion == "6":
-                menu_agregar_producto()
-            elif opcion == "7":
-                menu_reabastecer()
-            elif opcion == "8":
-                menu_eliminar_producto()
-            elif opcion == "9":
-                print("Sesión cerrada.")
-                break
-            else:
-                print("Opción inválida.")
-
+            match opcion:
+                case "1":
+                    menu_cuentas(usuarios)
+                case "2":
+                    menu_tienda_admin()
+                case "3":
+                    print("Sesión cerrada.")
+                    break
+                case _:
+                    print("Opción inválida.")
     # USUARIO
     elif tipo == "usuario":
         # Buscar al usuario que inició sesión
@@ -79,35 +40,20 @@ while True:
         print("\nBienvenido", usuario_actual[2])
         while True:
             print("\n===== MENU USUARIO =====")
-            print("1. Ver mi información")
-            print("2. Cambiar nombre")
-            print("3. Cambiar contraseña")
-            print("4. Ver catálogo")
-            print("5. Agregar al carrito")
-            print("6. Ver carrito")
-            print("7. Quitar del carrito")
-            print("8. Pagar")
-            print("9. Cerrar sesión")
+            print("1. Mi cuenta")
+            print("2. Tienda")
+            print("3. Cerrar sesión")
             opcion = input("Seleccione una opción: ")
-            if opcion == "1":
-                ver_perfil(usuario_actual)
-            elif opcion == "2":
-                cambiar_nombre(usuario_actual)
-            elif opcion == "3":
-                cambiar_contraseña(usuario_actual)
-            elif opcion == "4":
-                inventario.mostrar_catalogo()
-            elif opcion == "5":
-                menu_agregar_carrito()
-            elif opcion == "6":
-                carrito.mostrar_carrito()
-            elif opcion == "7":
-                menu_quitar_carrito()
-            elif opcion == "8":
-                menu_pagar(usuario_actual)
-            elif opcion == "9":
-                carrito.vaciar_carrito()
-                print("Sesión cerrada.")
-                break
-            else:
-                print("Opción inválida.")
+            match opcion:
+                case "1":
+                    menu_cuenta(usuario_actual)
+                case "2":
+                    menu_tienda_usuario(usuario_actual)
+                case "3":
+                    carrito.vaciar_carrito()
+                    print("Sesión cerrada.")
+                    break
+                case _:
+                    print("Opción inválida.")
+    else:
+        print("\nUsuario o contraseña incorrectos.")

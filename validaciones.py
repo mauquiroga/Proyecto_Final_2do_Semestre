@@ -34,3 +34,12 @@ def leer_texto(mensaje):
         if texto != "":
             return texto
         print("error: este campo no puede estar vacío.")
+
+def confirmar(mensaje):
+    while True:
+        s_n=input(mensaje + "(s/n): ").strip().lower()
+        if s_n == "s":
+            return True
+        elif s_n == "n":
+            return False
+        print("responder solo 's' o 'n'")
