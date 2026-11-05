@@ -23,9 +23,9 @@ def cambiar_nombre(usuario):
 def menu_agregar_carrito():
     while True:
         inventario.mostrar_catalogo()
-        codigo = leer_texto("Código del producto: ").upper()
+        nombre = leer_texto("Nombre del producto: ").upper()
         cantidad = leer_entero("Cantidad: ", minimo=1)
-        if carrito.agregar_al_carrito(codigo, cantidad):
+        if carrito.agregar_al_carrito(nombre, cantidad):
             print("Producto agregado al carrito.")
         if not confirmar("Quieres agregar otro producto: "):
             break
@@ -46,21 +46,35 @@ def menu_quitar_carrito():
             print("Tu carrito está vacío.")
             break
         carrito.mostrar_carrito()
-        codigo = leer_texto("Código del producto a quitar: ").upper()
-        if codigo not in carrito.carrito_codigos:
+        
+        # Cambio: Se solicita el nombre del producto a quitar
+        nombre = leer_texto("Nombre del producto a quitar: ")
+        
+        pos = inventario.buscar_indice_producto(nombre)
+        if pos == -1:
+            print("Error: ese producto no existe.")
+            continue
+            
+        nombre_real = inventario.nombres[pos]
+        
+        if nombre_real not in carrito.carrito_nombres:
             print("Ese producto no está en tu carrito.")
             continue
-        i = carrito.carrito_codigos.index(codigo)
+            
+        i = carrito.carrito_nombres.index(nombre_real)
         maximo = carrito.carrito_cantidades[i]
         cantidad = leer_entero(f"¿Cuántas unidades quitar? (1-{maximo}): ",
             minimo=1,
             maximo=maximo)
-        if carrito.quitar_del_carrito(codigo, cantidad):
+            
+        if carrito.quitar_del_carrito(nombre_real, cantidad):
             print("Carrito actualizado.")
+            
         if carrito.carrito_vacio():
-            print("tu carrito quedo vacio")
+            print("Tu carrito quedó vacío.")
             break
-        if not confirmar("quieres quitar otro producto?"):
+            
+        if not confirmar("¿Quieres quitar otro producto?"):
             break
 
 def menu_cuenta(usuario_actual):
