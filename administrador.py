@@ -247,7 +247,7 @@ def eliminar_admin(admin_actual):
             print("error: ese admin no existe")
         elif user == admin_actual.lower():
             print("error: no puedes eleminar tu cuenta activa")
-        elif confirmar("seguro de querer eliminar a {encontrado[0]}?"):
+        elif confirmar(f"seguro de querer eliminar a {encontrado[0]}?"):
             administradores.remove(encontrado)
             print("admin eliminado")
         else:
