@@ -110,49 +110,52 @@ def modificar_usuario(usuarios):
 
 def menu_agregar_producto():
     while True:
-        codigo = leer_texto("Código del producto: ").upper()
-        if inventario.buscar_indice_producto(codigo) != -1:
-            print("Error: ya existe un producto con ese código.")
-            return
+        nombre = leer_texto("Nombre del producto: ")
+        # Cambio: Se verifica si el producto ya existe por su nombre
+        if inventario.buscar_indice_producto(nombre) != -1:
+            print("Error: ya existe un producto con ese nombre.")
         else:
-            nombre = leer_texto("Nombre del producto: ")
             precio = leer_decimal("Precio: ", minimo=0.01)
             stock = leer_entero("Stock inicial: ", minimo=0)
-            inventario.agregar_producto(codigo, nombre, precio, stock)
+            inventario.agregar_producto(nombre, precio, stock)
             print("Producto agregado correctamente.")
-        if not confirmar("Quieres agregar otro producto?"):
+        if not confirmar("¿Quieres agregar otro producto?"):
             break
 
 def menu_reabastecer():
     while True:
-        codigo = leer_texto("Código del producto: ").upper()
-        pos = inventario.buscar_indice_producto(codigo)
+        inventario.mostrar_catalogo()
+        nombre = leer_texto("Nombre del producto a reabastecer: ")
+        pos = inventario.buscar_indice_producto(nombre)
         if pos == -1:
             print("Error: ese producto no existe.")
-            return
-        cantidad = leer_entero("Cantidad a sumar: ", minimo=1)
-        if inventario.reabastecer_stock(pos, cantidad):
-            print(f"Stock actualizado. Ahora hay {inventario.stocks[pos]} unidades.")
         else:
-            print("No se pudo reabastecer.")
-        if not confirmar("reabastecer otro producto?"):
+            cantidad = leer_entero("Cantidad a sumar: ", minimo=1)
+            if inventario.reabastecer_stock(pos, cantidad):
+                print(f"Stock actualizado. Ahora hay {inventario.stocks[pos]} unidades.")
+            else:
+                print("No se pudo reabastecer.")
+        if not confirmar("¿Reabastecer otro producto?"):
             break
 
 def menu_eliminar_producto():
     while True:
         inventario.mostrar_catalogo()
-        codigo = leer_texto("Código del producto a eliminar: ").upper()
-        pos = inventario.buscar_indice_producto(codigo)
+        nombre = leer_texto("Nombre del producto a eliminar: ")
+        pos = inventario.buscar_indice_producto(nombre)
         if pos == -1:
-            print("error: ese producto no existe.")
+            print("Error: ese producto no existe.")
             continue
-        nombre = inventario.nombres[pos]
-        if confirmar(f"¿Seguro que quieres eliminar '{nombre}'?"):
-            inventario.eliminar_producto(codigo)
-            print("Producto eliminado.")
+        nombre_real = inventario.nombres[pos]
+        if confirmar(f"¿Seguro que quieres eliminar '{nombre_real}'?"):
+            # Cambio: Se elimina pasándole el nombre al módulo inventario
+            if inventario.eliminar_producto(nombre_real):
+                print("Producto eliminado.")
+            else:
+                print("Error al eliminar el producto.")
         else:
             print("Operación cancelada.")
-        if not confirmar("Quieres eleminar otro producto?"):
+        if not confirmar("¿Quieres eliminar otro producto?"):
             break
 
 def menu_cuentas(usuarios,admin_actual):
@@ -244,11 +247,10 @@ def eliminar_admin(admin_actual):
             print("error: ese admin no existe")
         elif user == admin_actual.lower():
             print("error: no puedes eleminar tu cuenta activa")
-        elif confirmar("seguro de querer eliminar a {encontrado[0]}?"):
+        elif confirmar(f"seguro de querer eliminar a {encontrado[0]}?"):
             administradores.remove(encontrado)
             print("admin eliminado")
         else:
             print("operacion cancelada")
-        if not confirmar("quieres elemina rotro admin?"):
-            break
-        
+        if not confirmar("quieres eleminar otro admin?"):
+            break                
