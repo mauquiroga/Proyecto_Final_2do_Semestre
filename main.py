@@ -21,7 +21,7 @@ while True:
             opcion = input("Seleccione una opción: ")
             match opcion:
                 case "1":
-                    menu_cuentas(usuarios)
+                    menu_cuentas(usuarios,usuario_login)
                 case "2":
                     menu_tienda_admin()
                 case "3":

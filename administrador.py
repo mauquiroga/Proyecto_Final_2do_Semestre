@@ -1,4 +1,6 @@
 import inventario
+from datos import administradores
+from login import usuario_existente
 from validaciones import leer_entero, leer_decimal, leer_texto, confirmar
 
 def ver_usuarios(usuarios):
@@ -13,83 +15,98 @@ def ver_usuarios(usuarios):
         print(f"Edad: {user[3]}")
 
 def agregar_usuario(usuarios):
-    print("\n===== AGREGAR USUARIO =====")
-    usuario = input("Nuevo usuario: ")
-    # Comprobar si ya existe
-    for user in usuarios:
-        if user[0].lower() == usuario.lower():
-            print("Ese usuario ya existe.")
+    while True:
+        print("\n===== AGREGAR USUARIO =====")
+        usuario = input("Nuevo usuario: ")
+        if usuario_existente(usuario,usuarios,administradores):
+            print("ese usuario ya esta en uso")
+            continue
+        contraseña = input("Contraseña: ")
+        nombre = input("Nombre completo: ")
+        try:
+            edad = int(input("Edad: "))
+        except ValueError:
+            print("La edad debe ser un número.")
             return
-    contraseña = input("Contraseña: ")
-    nombre = input("Nombre completo: ")
-    try:
-        edad = int(input("Edad: "))
-    except ValueError:
-        print("La edad debe ser un número.")
-        return
-    usuarios.append([
-        usuario,
-        contraseña,
-        nombre,
-        edad
-    ])
-    print("Usuario agregado correctamente.")
+        usuarios.append([
+            usuario,
+            contraseña,
+            nombre,
+            edad
+        ])
+        print("Usuario agregado correctamente.")
+        if not confirmar("quieres agregar otro usuario?"):
+            break
 
 def eliminar_usuario(usuarios):
-    ver_usuarios(usuarios)
-    if len(usuarios) == 0:
-        return
-    name_user=input("ingrese usuario a eliminar: ").strip().lower()
-    for i in range(len(usuarios)):
-        if usuarios[i][0].lower() == name_user:
-            confirmar=input("confirmar eleminar usuario (s/n): ")
-            if confirmar == "s":
-                usuarios.pop(i)
-                print("usuario eliminado correctamente")
-            else:
-                print("operacion cancelada")
-                return
-    print("error: usuario no existente")
+    while True:
+        ver_usuarios(usuarios)
+        if len(usuarios) == 0:
+            return
+        name_user=input("ingrese usuario a eliminar: ").strip().lower()
+        encontrado=False
+        for i in range(len(usuarios)):
+            if usuarios[i][0].lower() == name_user:
+                encontrado=True
+                if confirmar("confirmar para eleminar el usuario"):
+                    usuarios.pop(i)
+                    print("usuario eliminado correctamente")
+                else:
+                    print("operacion cancelada")
+                    break
+        if not encontrado:
+            print("ese usuario no existe")
+        if not confirmar("quieres eliminar otro usuario?"):
+            break
 
 def modificar_usuario(usuarios):
-    ver_usuarios(usuarios)
-    if len(usuarios) == 0:
-        return
-    usuario=input("\n ingrese usuario a modificar: ").strip().lower()
-    user=None
-    for u in usuarios:
-        if u[0].lower() == usuario:
-            user=u
-            break
-    if user is None:
-        print("error: el usuario no existe")
-        return 
-    while True:   
-        print("\n¿Qué quieres modificar?")
-        print("1. Usuario")
-        print("2. Contraseña")
-        print("3. Nombre")
-        print("4. Edad")
-        print("5. Volver")
-        opcion = input("Opción: ")
-        if opcion == "1":
-            user[0] = input("Nuevo usuario: ")
-        elif opcion == "2":
-            user[1] = input("Nueva contraseña: ")
-        elif opcion == "3":
-            user[2] = input("Nuevo nombre: ")
-        elif opcion == "4":
-            try:
-                user[3] = int(input("Nueva edad: "))
-            except ValueError:
-                print("La edad debe ser un número.")
-                return
-        elif opcion == "5":
-            break    
-        else:
-            print("Opción inválida.")
+    while True:
+        ver_usuarios(usuarios)
+        if len(usuarios) == 0:
             return
-        print("Usuario modificado correctamente.")
+        usuario=input("\n ingrese usuario a modificar: ").strip().lower()
+        user=None
+        for u in usuarios:
+            if u[0].lower() == usuario:
+                user=u
+                break
+        if user is None:
+            print("error: el usuario no existe")
+            return 
+        while True:   
+            print("\n¿Qué quieres modificar?")
+            print("1. Usuario")
+            print("2. Contraseña")
+            print("3. Nombre")
+            print("4. Edad")
+            print("5. Volver")
+            opcion = input("Opción: ")
+            if opcion == "1":
+                nuevo = input("Nuevo usuario: ")
+                if usuario_existente(nuevo,usuarios,administradores,ignorar=user):
+                    print("error: ese usuario ya existe")
+                else:
+                    user[0]=nuevo
+            elif opcion == "2":
+                user[1] = input("Nueva contraseña: ")
+            elif opcion == "3":
+                user[2] = input("Nuevo nombre: ")
+            elif opcion == "4":
+                try:
+                    user[3] = int(input("Nueva edad: "))
+                except ValueError:
+                    print("La edad debe ser un número.")
+                    return
+            elif opcion == "5":
+                break    
+            else:
+                print("Opción inválida.")
+                return
+            print("Usuario modificado correctamente.")
+            if not confirmar("quieres modificar otro dato?"):
+                break
+        if not confirmar("quieres modificar otro usuario?"):
+            break
 
 def menu_agregar_producto():
     while True:
@@ -141,14 +158,17 @@ def menu_eliminar_producto():
         if not confirmar("¿Quieres eliminar otro producto?"):
             break
 
-def menu_cuentas(usuarios):
+def menu_cuentas(usuarios,admin_actual):
     while True:
         print("\n===== ADMINISTRAR CUENTAS =====")
         print("1. Ver usuarios")
         print("2. Agregar usuario")
         print("3. Eliminar usuario")
         print("4. Modificar usuario")
-        print("5. Volver")
+        print("5. ver administradores")
+        print("6. agregar admins")
+        print("7. eliminar admins")
+        print("8. Volver")
         opcion = input("Seleccione una opción: ")
         match opcion:
             case "1":
@@ -160,6 +180,12 @@ def menu_cuentas(usuarios):
             case "4":
                 modificar_usuario(usuarios)
             case "5":
+                ver_administradoes()
+            case "6":
+                agregar_admin(usuarios)
+            case "7":
+                eliminar_admin(admin_actual)
+            case "8":
                 break
             case _:
                 print("Opción inválida.")
@@ -186,3 +212,45 @@ def menu_tienda_admin():
                 break
             case _:
                 print("Opción inválida.")
+
+def ver_administradoes():
+    print("\n===== ADMINISTRADORES =====")
+    for i in range(len(administradores)):
+        print(f"{i+1}. {administradores[i][0]}-{administradores[i][2]}")
+
+def agregar_admin(usuarios):
+    while True:
+        print("\n===== AGREGAR ADMINISTRADOR =====")
+        nuevo=input("ingrese nuevo admin(usuario): ")
+        if usuario_existente(nuevo,usuarios,administradores):
+            print("ese usuario ya esta en uso")
+            continue
+        clave=input("ingrese contraseña: ")
+        nombre=input("ingrese nombre completo: ")
+        administradores.append([nuevo, clave, nombre])
+        print("admin agregado exitosamente")
+        if not confirmar("quieres agregar otro admin?"):
+            break
+def eliminar_admin(admin_actual):
+    while True:
+        if len(administradores)<=1:
+            print("no puedes eleminar al ultimo admin que queda")
+            break
+        ver_administradoes()
+        user=input("ingrese el admin a eleminar(usuario): ").lower()
+        encontrado=None
+        for a in administradores:
+            if a[0].lower()==user:
+                encontrado=a
+                break
+        if encontrado is None:
+            print("error: ese admin no existe")
+        elif user == admin_actual.lower():
+            print("error: no puedes eleminar tu cuenta activa")
+        elif confirmar("seguro de querer eliminar a {encontrado[0]}?"):
+            administradores.remove(encontrado)
+            print("admin eliminado")
+        else:
+            print("operacion cancelada")
+        if not confirmar("quieres eleminar otro admin?"):
+            break                
