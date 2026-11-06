@@ -1,6 +1,6 @@
 import carrito
 from datos import usuarios, administradores
-from login import iniciar_sesion
+from login import iniciar_sesion,buscar_usuario_repetido
 from administrador import menu_cuentas, menu_tienda_admin
 from usuario import menu_cuenta, menu_tienda_usuario
 while True:
